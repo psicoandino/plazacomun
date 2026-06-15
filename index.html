@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Plaza Comun beta 001: posts territoriales en estructura vanilla escalable.">
+    <title>Plaza Comun beta 001</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/app.js" defer></script>
+</head>
+<body>
+    <header class="site-header">
+        <div class="shell header-layout">
+            <a href="index.html" class="brand" aria-label="Plaza Comun beta 001">
+                <span class="brand-mark">PC</span>
+                <span class="brand-copy">
+                    <span class="brand-name">Plaza Comun</span>
+                    <span class="brand-tagline">Beta 001 / vanilla editorial</span>
+                </span>
+            </a>
+            <nav class="main-nav" aria-label="Secciones">
+                <a href="#posts" class="nav-link is-active">Posts</a>
+                <a href="#estructura" class="nav-link">Estructura</a>
+            </nav>
+            <button class="theme-toggle" type="button" id="themeToggle" aria-label="Cambiar modo claro u oscuro">
+                <span aria-hidden="true" id="themeIcon">☾</span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero-section" id="posts">
+            <div class="shell hero-layout">
+                <article class="daily-briefing">
+                    <p class="eyebrow">Beta 001</p>
+                    <h1>Posts con URL propia, sin framework</h1>
+                    <p class="briefing-dek">Una estructura simple para publicar, compartir y crecer despues hacia comentarios, fuentes o interacciones.</p>
+                </article>
+                <aside class="method-panel" aria-label="Decision tecnica">
+                    <p class="eyebrow">Decision</p>
+                    <h2>Un template, muchos posts</h2>
+                    <ol>
+                        <li>Post reusable en <code>post.html</code></li>
+                        <li>Contenido plano en <code>content/posts</code></li>
+                        <li>Indice en <code>data/posts-index.json</code></li>
+                    </ol>
+                </aside>
+            </div>
+        </section>
+
+        <section class="briefings-section shell" aria-labelledby="postsTitle">
+            <div class="section-heading inline-heading">
+                <div>
+                    <p class="eyebrow">Archivo editorial</p>
+                    <h2 id="postsTitle">Posts disponibles</h2>
+                </div>
+            </div>
+            <div class="briefing-grid" id="postsGrid" aria-live="polite"></div>
+            <p class="empty-state" id="emptyState" hidden>No hay posts publicados.</p>
+        </section>
+
+        <section class="about-section shell" id="estructura" aria-labelledby="structureTitle">
+            <p class="eyebrow">Estructura</p>
+            <h2 id="structureTitle">Por que los posts estan en una sola carpeta</h2>
+            <p>Para esta beta, los archivos usan nombres como <code>2026_05_08_salud-mental-liceos.json</code>. Eso conserva fecha, orden y busqueda facil sin crear demasiadas carpetas antes de necesitarlas.</p>
+        </section>
+    </main>
+</body>
+</html>

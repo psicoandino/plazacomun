@@ -1,0 +1,229 @@
+{
+  "id": "2026_06_15_desempleo-chile-emergencia-informalidad",
+  "title": "Desempleo en Chile: la emergencia de la informalidad y la brecha de genero",
+  "dek": "Con una desocupacion del 9,1% liderada por el desempleo femenino (10,5%) y una informalidad de 26,8%, los expertos advierten una emergencia laboral cruzada por el estancamiento de la productividad.",
+  "publishedAt": "2026-06-15",
+  "publishedLabel": "2026-06-15",
+  "axis": "servicios-publicos-acceso",
+  "axisLabel": "Servicios publicos y acceso",
+  "territory": "Chile (con foco en regiones del Biobio, Valparaiso y Metropolitana)",
+  "readingTime": "4 min",
+  "priority": "Alta",
+  "methodLabel": "Analisis editorial",
+  "sourceSummary": "Cura y analiza reportes de empleo del INE (trimestres moviles de 2025 y 2026), declaraciones del economista David Bravo sobre la emergencia laboral y las propuestas de adaptabilidad laboral del Gobierno y el sector privado.",
+  "sections": [
+    {
+      "heading": "El desempleo supera el 9% sostenido por la informalidad",
+      "body": "La desocupacion nacional llego a 9,1% en el trimestre febrero-abril de 2026 (un aumento interanual de 0,3 pp.). El factor clave radica en que el crecimiento de la fuerza de trabajo supera la capacidad de contratacion formal de la economia. En consecuencia, el empleo informal ha crecido un 4,5% en un año, situando la tasa de informalidad en un 26,8% nacional. Este fenomeno actua como un amortiguador precario frente a la falta de puestos de trabajo estables.",
+      "sourceIds": [
+        "src_003",
+        "src_004"
+      ]
+    },
+    {
+      "heading": "La brecha de genero y el impacto desigual por regiones",
+      "body": "El panorama laboral golpea con mayor fuerza a las mujeres, cuya tasa de desocupacion alcanzo el 10,5% (un alza de 0,8 pp. interanual), frente al 8,0% registrado por los hombres. Asimismo, la realidad regional expone severas asimetrias: el desempleo se encumbra al 10,0% en la region del Biobio, 9,8% en Valparaiso y 9,6% en la Region Metropolitana. En el Biobio, de hecho, el incremento de la desocupacion se explica directamente por la destruccion del empleo formal en pymes y el auge del empleo informal.",
+      "sourceIds": [
+        "src_003",
+        "src_004"
+      ]
+    },
+    {
+      "heading": "El debate por la \"emergencia laboral\" y la productividad",
+      "body": "El economista de la PUC David Bravo sostiene que el pais enfrenta una 'emergencia laboral' invisibilizada por sus pares y la politica publica. Argumenta que aumentar el salario minimo y otros costos laborales resulta contraproducente cuando la productividad laboral permanece estancada y plana. Para financiar mayores costos laborales, la productividad debe incrementarse primero, de lo contrario, se profundiza la precarizacion y las barreras para los nuevos trabajadores.",
+      "sourceIds": [
+        "src_002",
+        "src_005",
+        "src_010"
+      ]
+    },
+    {
+      "heading": "Hacia donde se mueve la respuesta publica y privada",
+      "body": "Ante la persistencia de las malas cifras (acumulando 38 meses consecutivos con desempleo superior al 8%), se han reactivado propuestas de adaptabilidad laboral. El ministro del Trabajo, Tomas Rau, alista ajustes centrados en la compatibilizacion de turnos, mientras que desde el sector privado, representados por Susana Jimenez (CPC), se demanda una agenda de adaptabilidad horaria que flexibilice la contratacion y facilite la creacion de nuevos empleos formales.",
+      "sourceIds": [
+        "src_003",
+        "src_006",
+        "src_007"
+      ]
+    }
+  ],
+  "keyPoints": [
+    "La tasa de desocupacion en Chile llego al 9,1% en el trimestre febrero-abril de 2026, completando mas de tres años consecutivos sobre el umbral del 8%.",
+    "El desempleo femenino alcanza el 10,5%, reflejando una brecha critica de 2,5 puntos porcentuales respecto al desempleo de los hombres (8,0%).",
+    "La informalidad laboral subio al 26,8%, con un incremento anual de 4,5% en ocupaciones informales, consolidandose como sosten de la ocupacion precaria.",
+    "Las regiones del Biobio (10%), Valparaiso (9,8%) y Metropolitana (9,6%) concentran los indices mas criticos de desempleo en el pais.",
+    "Economistas como David Bravo advierten una emergencia laboral y critican la carga de costos laborales extras en un contexto de productividad estancada."
+  ],
+  "bibliography": [
+    {
+      "sourceId": "src_001",
+      "query": "chile desempleo",
+      "title": "Desempleo baja en Chile en el trimestre junio-agosto: los motivos",
+      "domain": "www.adnradio.cl",
+      "publisher": "ADN Radio",
+      "author": "ADN Radio",
+      "url": "https://www.adnradio.cl/2025/09/30/desempleo-baja-en-chile-en-el-trimestre-junio-agosto-los-motivos/",
+      "published": "2025-09-30T00:00:00+00:00",
+      "publishedAt": "2025-09-30",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 116.5,
+      "usedFor": [
+        "Datos historicos del trimestre junio-agosto 2025 de la Encuesta Nacional de Empleo"
+      ]
+    },
+    {
+      "sourceId": "src_002",
+      "query": "chile desempleo",
+      "title": "Chile: desempleo alcanzo un 8,4% en el trimestre septiembre-noviembre",
+      "domain": "www.telesurtv.net",
+      "publisher": "Telesur",
+      "author": "Telesur",
+      "url": "https://www.telesurtv.net/chile-desempleo-trimestre-septiembre-noviembre/",
+      "published": "2025-12-30T00:00:00+00:00",
+      "publishedAt": "2025-12-30",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 117.8,
+      "usedFor": [
+        "Datos del trimestre septiembre-noviembre 2025, tasas de informalidad iniciales y barreras para nuevos trabajadores"
+      ]
+    },
+    {
+      "sourceId": "src_003",
+      "query": "chile desempleo",
+      "title": "Desempleo en Chile se mantiene sobre el 8%: estas regiones lideran las cifras mas altas",
+      "domain": "www.adnradio.cl",
+      "publisher": "ADN Radio",
+      "author": "ADN Radio",
+      "url": "https://www.adnradio.cl/2026/04/30/desempleo-en-chile-se-mantiene-sobre-el-8-estas-regiones-lideran-las-cifras-mas-altas/",
+      "published": "2026-04-30T00:00:00+00:00",
+      "publishedAt": "2026-04-30",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 116.3,
+      "usedFor": [
+        "Mencion a los 38 meses consecutivos de desempleo sobre el 8%, desglose regional del Biobio (10%), Valparaiso (9,8%) y Region Metropolitana (9,6%) en trimestre enero-marzo 2026"
+      ]
+    },
+    {
+      "sourceId": "src_004",
+      "query": "chile desempleo",
+      "title": "Desempleo sube a 9,1% en Chile: mujeres registran tasa de 10,5% y crece la informalidad",
+      "domain": "www.adnradio.cl",
+      "publisher": "ADN Radio",
+      "author": "ADN Radio",
+      "url": "https://www.adnradio.cl/2026/05/29/desempleo-sube-a-91-en-chile-mujeres-registran-tasa-de-105-y-crece-la-informalidad/",
+      "published": "2026-05-29T00:00:00+00:00",
+      "publishedAt": "2026-05-29",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 116.0,
+      "usedFor": [
+        "Cifras del desempleo nacional del 9,1% (trimestre febrero-abril 2026), brecha de genero con 10,5% femenino y 8,0% masculino, e informalidad del 26,8%"
+      ]
+    },
+    {
+      "sourceId": "src_005",
+      "query": "chile desempleo",
+      "title": "David Bravo y “emergencia laboral”: “Subir fuertemente el salario minimo es complejo si es que hay problemas de empleo”",
+      "domain": "www.cnnchile.com",
+      "publisher": "CNN Chile",
+      "author": "CNN Chile",
+      "url": "https://www.cnnchile.com/lodijeronencnn/david-bravo-y-emergencia-laboral-subir-fuertemente-el-salario-minimo-es-complejo-si-es-que-hay-problemas-de-empleo/",
+      "published": "2026-05-25T20:59:09+00:00",
+      "publishedAt": "2026-05-25",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 109.2,
+      "usedFor": [
+        "Declaraciones de David Bravo sobre la emergencia laboral, la productividad plana y el costo laboral asociado al salario minimo"
+      ]
+    },
+    {
+      "sourceId": "src_006",
+      "query": "chile desempleo",
+      "title": "Adaptabilidad laboral y compatibilizacion de turnos: Los ajustes al empleo que alistaria el Gobierno",
+      "domain": "www.msn.com",
+      "publisher": "MSN (La Tercera)",
+      "author": "Desconocido",
+      "url": "https://www.msn.com/es-cl/noticias/other/adaptabilidad-laboral-y-compatibilizaci%C3%B3n-de-turnos-los-ajustes-al-empleo-que-alistar%C3%ADa-el-gobierno/ar-AA25GWGj?ocid=BingNewsVerp",
+      "published": "2026-06-09T20:59:09+00:00",
+      "publishedAt": "2026-06-09",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 107.9,
+      "usedFor": [
+        "Anuncio de ajustes gubernamentales para adaptabilidad de turnos a cargo de Tomas Rau"
+      ]
+    },
+    {
+      "sourceId": "src_007",
+      "query": "chile desempleo",
+      "title": "Susana Jimenez: “Chile necesita una agenda pro empleo que facilite las practicas de adaptabilidad”",
+      "domain": "www.msn.com",
+      "publisher": "MSN (CPC)",
+      "author": "Susana Jimenez",
+      "url": "https://www.msn.com/es-cl/dinero/recursos-humanos/susana-jim%C3%A9nez-chile-necesita-una-agenda-pro-empleo-que-facilite-las-pr%C3%A1cticas-de-adaptabilidad/ar-AA25cCZx?ocid=BingNewsVerp",
+      "published": "Opinion6 days ago",
+      "publishedAt": "2026-06-09",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 107.8,
+      "usedFor": [
+        "Postura de la CPC sobre una agenda pro-empleo y adaptabilidad laboral"
+      ]
+    },
+    {
+      "sourceId": "src_008",
+      "query": "chile desempleo",
+      "title": "Tarotista Latife Soto lanza preocupantes advertencias para Chile en este segundo semestre: \"Hay que tener mucho cuidado\"",
+      "domain": "www.msn.com",
+      "publisher": "MSN",
+      "author": "Desconocido",
+      "url": "https://www.msn.com/es-cl/noticias/otras/tarotista-latife-soto-lanza-preocupantes-advertencias-para-chile-en-este-segundo-semestre-hay-que-tener-mucho-cuidado/ar-AA24W6Zl?ocid=BingNewsVerp",
+      "published": "2026-06-05T20:59:09+00:00",
+      "publishedAt": "2026-06-05",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 107.2,
+      "usedFor": [
+        "Descartado editorialmente por falta de sustento tecnico y relevancia estadistica"
+      ]
+    },
+    {
+      "sourceId": "src_009",
+      "query": "chile desempleo",
+      "title": "Crisis de empleo en Chile: conoce los profesionales de tecnologia mas requeridos en el mercado",
+      "domain": "www.msn.com",
+      "publisher": "MSN",
+      "author": "Desconocido",
+      "url": "https://www.msn.com/es-cl/dinero/general/crisis-de-empleo-en-chile-conoce-los-profesionales-de-tecnolog%C3%ADa-m%C3%A1s-requeridos-en-el-mercado/ar-AA2548Xi?ocid=BingNewsVerp",
+      "published": "2026-06-08T20:59:09+00:00",
+      "publishedAt": "2026-06-08",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 107.0,
+      "usedFor": [
+        "Identificacion de excepciones en sectores tecnologicos (IA, mineria, energias)"
+      ]
+    },
+    {
+      "sourceId": "src_010",
+      "query": "chile desempleo",
+      "title": "Crisis de desempleo en Chile: ¿estamos ante una emergencia laboral?",
+      "domain": "www.msn.com",
+      "publisher": "MSN",
+      "author": "Desconocido",
+      "url": "https://www.msn.com/es-cl/noticias/other/crisis-de-desempleo-en-chile-estamos-ante-una-emergencia-laboral/ar-AA24WpMu?ocid=BingNewsVerp",
+      "published": "2026-06-05T20:59:09+00:00",
+      "publishedAt": "2026-06-05",
+      "retrievedAt": "2026-06-15",
+      "sourceType": "media",
+      "editorial_score": 106.7,
+      "usedFor": [
+        "Mapeo de la discusion publica en torno a la categoria de emergencia laboral con David Bravo"
+      ]
+    }
+  ]
+}

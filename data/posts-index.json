@@ -1,0 +1,34 @@
+{
+  "version": "beta_001",
+  "strategy": "flat-files-with-reusable-post-template",
+  "posts": [
+    {
+      "id": "2026_05_08_desempleo-chile-brechas-acceso",
+      "title": "Desempleo en Chile: cuando el promedio nacional esconde brechas de acceso",
+      "dek": "La tasa nacional cerca del 9% importa, pero la senal mas util esta en mirar quienes quedan fuera del empleo formal.",
+      "axisLabel": "Servicios publicos y acceso",
+      "territory": "Chile",
+      "publishedLabel": "2026-05-08",
+      "url": "post.html?id=2026_05_08_desempleo-chile-brechas-acceso"
+    },
+    {
+      "id": "2026_05_08_salud-mental-liceos",
+      "title": "Salud mental en liceos: cuando el problema no cabe en una charla motivacional",
+      "dek": "La alerta no es solo emocional: tambien muestra brechas de equipos, tiempos de respuesta y redes locales de apoyo.",
+      "axisLabel": "Derechos, infancia y bienestar",
+      "territory": "Comunas urbanas",
+      "publishedLabel": "2026-05-08",
+      "url": "post.html?id=2026_05_08_salud-mental-liceos"
+    },
+    {
+      "id": "2026_06_15_desempleo-chile-emergencia-informalidad",
+      "title": "Desempleo en Chile: la emergencia de la informalidad y la brecha de genero",
+      "dek": "Con una desocupacion del 9,1% liderada por el desempleo femenino (10,5%) y una informalidad de 26,8%, los expertos advierten una emergencia laboral cruzada por el estancamiento de la productividad.",
+      "axis": "servicios-publicos-acceso",
+      "axisLabel": "Servicios publicos y acceso",
+      "territory": "Chile (con foco en regiones del Biobio, Valparaiso y Metropolitana)",
+      "publishedLabel": "2026-06-15",
+      "url": "post.html?id=2026_06_15_desempleo-chile-emergencia-informalidad"
+    }
+  ]
+}
