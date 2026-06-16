@@ -581,6 +581,13 @@ a {
    9. PORTAL SOBERANO & TELEMETRÍA
    ========================================================================== */
 
+.portal-setup {
+    margin: 32px 0 20px 0;
+    padding-top: 24px;
+    border-top: 1px dashed var(--line); /* Separador sutil texturizado */
+    text-align: center;
+}
+
 /* Portal Modal Estricto */
 .portal-gate {
     background: #050505 !important;
@@ -602,6 +609,39 @@ a {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 99999;
+}
+
+.setup-label {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 1.5px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+}
+
+.portal-accent-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Separación ergonómica para interacción digital/móvil */
+}
+
+/* Forzar simetría interactiva en los círculos dentro del portal */
+.portal-accent-group .accent-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    padding: 0;
+    transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+}
+
+/* Feedback visual instantáneo cuando una opción es la activa en el sistema */
+.portal-accent-group .accent-dot.is-active {
+    border-color: var(--text) !important;
+    transform: scale(1.25);
+    box-shadow: 0 0 12px var(--acento);
 }
 
 /* --- DIFUMINADO DEL ENTORNO (BACKDROP) --- */
