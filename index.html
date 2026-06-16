@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="es">
+<!-- Cambiar esto en index.html y post.html -->
+<html lang="es" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,41 +13,96 @@
     <header class="site-header">
         <div class="shell header-layout">
             <a href="index.html" class="brand" aria-label="Plaza Comun beta 001">
-                <span class="brand-mark">PC</span>
+                <span class="brand-mark" aria-label="Plaza Común">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                    >
+                        <rect x="3" y="3" width="18" height="18" rx="3"/>
+                        <path d="M7 9H17"/>
+                        <path d="M7 12H17"/>
+                        <path d="M8 12V16"/>
+                        <path d="M16 12V16"/>
+                    </svg>
+                </span>
                 <span class="brand-copy">
                     <span class="brand-name">Plaza Comun</span>
                     <span class="brand-tagline">Beta 001 / vanilla editorial</span>
                 </span>
             </a>
-            <nav class="main-nav" aria-label="Secciones">
+            
+            <nav class="main-nav" id="mainNav" aria-label="Secciones">
                 <a href="#posts" class="nav-link is-active">Posts</a>
                 <a href="#estructura" class="nav-link">Estructura</a>
             </nav>
-            <button class="theme-toggle" type="button" id="themeToggle" aria-label="Cambiar modo claro u oscuro">
-                <span aria-hidden="true" id="themeIcon">☾</span>
-            </button>
+                
+                <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Abrir menú de navegación">
+                    <span class="hamburger-line" aria-hidden="true"></span>
+                    <span class="hamburger-line" aria-hidden="true"></span>
+                </button>
+            </div>
         </div>
     </header>
 
     <main>
-        <section class="hero-section" id="posts">
-            <div class="shell hero-layout">
-                <article class="daily-briefing">
-                    <p class="eyebrow">Beta 001</p>
-                    <h1>Posts con URL propia, sin framework</h1>
-                    <p class="briefing-dek">Una estructura simple para publicar, compartir y crecer despues hacia comentarios, fuentes o interacciones.</p>
-                </article>
-                <aside class="method-panel" aria-label="Decision tecnica">
-                    <p class="eyebrow">Decision</p>
-                    <h2>Un template, muchos posts</h2>
-                    <ol>
-                        <li>Post reusable en <code>post.html</code></li>
-                        <li>Contenido plano en <code>content/posts</code></li>
-                        <li>Indice en <code>data/posts-index.json</code></li>
-                    </ol>
-                </aside>
+        <dialog class="portal-gate" id="portalGate">
+            <div class="portal-content">
+                <p class="eyebrow">[ MANIFESTO_FUNDACIONAL ]</p>
+                <h2 class="portal-title">Dios · Ciencia · Mente</h2>
+                <div class="portal-body">
+                    <p>Este espacio opera bajo principios de soberanía cognitiva y computacional. No registra tu identidad, no extrae tu atención, no transfiere métricas a nodos centralizados.</p>
+                    <p>Consumes código vanilla puro, estructurado para la preservación del pensamiento territorial sobre la materia.</p>
+                </div>
+                <form method="dialog" class="portal-actions">
+                    <button class="portal-btn" id="acceptManifesto">ENTRAR AL ARCHIVO ➔</button>
+                </form>
             </div>
-        </section>
+            </dialog>
+
+<section class="telemetry-hero shell" id="telemetrySection">
+    
+    <div class="telemetry-content" id="telemetryContent">
+        <div class="telemetry-header">
+            <p class="eyebrow">Instrumental de Control</p>
+            <h1 class="hero-title">Matriz de Telemetría Local</h1>
+        </div>
+
+        <div class="telemetry-selector">
+            <label class="control-label">
+                <input type="checkbox" data-metric="dom" id="chk-dom" checked> <span class="indicator"></span> [ COMPLEJIDAD_DOM ]
+            </label>
+            <label class="control-label">
+                <input type="checkbox" data-metric="unix" id="chk-unix" checked> <span class="indicator"></span> [ UNIX_TIME ]
+            </label>
+            <label class="control-label">
+                <input type="checkbox" data-metric="cobre" id="chk-cobre" checked> <span class="indicator"></span> [ MATERIA_COBRE ]
+            </label>
+        </div>
+
+        <div class="telemetry-grid">
+            <div class="telemetry-card" id="card-dom">
+                <span class="card-tag">DOM.NODES</span>
+                <div class="card-value">142 <span class="unit">nodos</span></div>
+                <p class="card-desc">Pureza estructural del lienzo actual.</p>
+            </div>
+            <div class="telemetry-card" id="card-unix">
+                <span class="card-tag">UNIX.EPOCH</span>
+                <div class="card-value">1776348920</div>
+                <p class="card-desc">Coordenada temporal lineal absoluta.</p>
+            </div>
+            <div class="telemetry-card" id="card-cobre">
+                <span class="card-tag">CU.SPOT</span>
+                <div class="card-value">4.32 <span class="unit">USD/lb</span></div>
+                <p class="card-desc">Densidad económica de la materia prima local.</p>
+            </div>
+        </div>
+    </div>
+
+    <button id="toggleTelemetryBtn" class="telemetry-tab-trigger" aria-label="Alternar panel de telemetría">
+        <span class="tab-icon">▲</span> <span class="tab-text">TELEMETRÍA</span>
+    </button>
+</section>
 
         <section class="briefings-section shell" aria-labelledby="postsTitle">
             <div class="section-heading inline-heading">
@@ -65,5 +121,41 @@
             <p>Para esta beta, los archivos usan nombres como <code>2026_05_08_salud-mental-liceos.json</code>. Eso conserva fecha, orden y busqueda facil sin crear demasiadas carpetas antes de necesitarlas.</p>
         </section>
     </main>
+
+    <footer class="sys-telemetry" aria-label="Control del sistema">
+        <div class="shell telemetry-layout">
+            <div class="sys-status">
+                <span class="status-indicator"></span>
+                <span class="mono-text">SYS_STATUS: READY // CORE: VANILLA</span>
+            </div>
+            
+            <div class="sys-controls">
+                <div class="settings-root">
+                    <button class="settings-toggle-btn" id="settingsToggle" aria-label="Configurar acento cromático">
+                        <svg 
+                            class="icon-settings" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            stroke-width="1.5" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round"
+                            aria-hidden="true"
+                        >
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                        </svg>
+                        <span class="btn-text">[ CONFIG_ACCENT ]</span>
+                    </button>
+                    <div class="settings-submenu" id="colorSubmenu" data-state="closed">
+                        <button class="accent-dot" data-accent="sangre" aria-label="Acento Sangre"></button>
+                        <button class="accent-dot" data-accent="cobre" aria-label="Acento Cobre"></button>
+                        <button class="accent-dot" data-accent="tierra" aria-label="Acento Tierra"></button>
+                        <button class="accent-dot" data-accent="mostaza" aria-label="Acento Mostaza"></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
 </body>
 </html>

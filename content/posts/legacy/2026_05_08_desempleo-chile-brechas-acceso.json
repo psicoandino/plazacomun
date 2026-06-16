@@ -1,0 +1,25 @@
+{
+  "id": "2026_05_08_desempleo-chile-brechas-acceso",
+  "title": "Desempleo en Chile: cuando el promedio nacional esconde brechas de acceso",
+  "dek": "La tasa nacional cerca del 9% importa, pero la senal mas util esta en mirar quienes quedan fuera del empleo formal y que apoyos publicos existen para volver a entrar.",
+  "publishedAt": "2026-05-08",
+  "publishedLabel": "2026-05-08",
+  "axisLabel": "Servicios publicos y acceso",
+  "territory": "Chile, con foco en mujeres, jovenes e informalidad",
+  "readingTime": "5 min",
+  "methodLabel": "Analisis editorial",
+  "sections": [
+    {
+      "heading": "Que esta pasando",
+      "body": "Varias fuentes citan una tasa de desempleo cercana al 9% en Chile durante trimestres moviles recientes."
+    },
+    {
+      "heading": "Por que importa",
+      "body": "El promedio nacional puede esconder brechas de genero, edad, informalidad y cuidados que definen el acceso real al trabajo formal."
+    },
+    {
+      "heading": "Que se puede hacer",
+      "body": "Verificar la fuente primaria del INE, observar empleo formal versus informal y mapear apoyos territoriales de empleo, cuidados e intermediacion."
+    }
+  ]
+}

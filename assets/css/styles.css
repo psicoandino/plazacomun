@@ -1,62 +1,85 @@
+/* ==========================================================================
+   1. TOKENS DE DISEÑO SOBERANO (NEGRO ABSOLUTO OLED)
+   ========================================================================== */
 :root {
-    color-scheme: light;
-    --bg: #f4efe6;
-    --bg-soft: #ebe3d6;
-    --surface: #fffaf0;
-    --surface-raised: #ffffff;
-    --text: #20201d;
-    --muted: #665f55;
-    --quiet: #8a8174;
-    --line: #d9ccba;
-    --ink: #1f3b35;
-    --blue: #2f7dd3;
-    --clay: #b75d45;
-    --green: #43745a;
-    --gold: #b8842f;
-    --shadow: rgba(49, 39, 28, 0.16);
-    --font-main: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    --font-mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
-}
-
-:root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #10110f;
-    --bg-soft: #171814;
-    --surface: #1d1e19;
-    --surface-raised: #25261f;
+    --bg: #000000;
     --text: #f5efe4;
-    --muted: #c5b9a9;
-    --quiet: #8e8578;
-    --line: #36352e;
-    --ink: #a8d8c7;
-    --blue: #73a7e8;
-    --clay: #df846b;
-    --green: #91bf9f;
-    --gold: #e4b45f;
-    --shadow: rgba(0, 0, 0, 0.38);
+    --muted: #8e867b;
+    --quiet: rgba(255, 255, 255, 0.25);
+    --line: rgba(255, 255, 255, 0.06);
+    
+    /* Tipografías Editoriales */
+    --font-main: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-serif: Georgia, Cambria, "Times New Roman", Times, serif;
+    --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
 }
 
+/* Matriz de Acentos Cromáticos Sutiles */
+:root[data-accent="cobre"]   { --acento: #4FA89B; --acento-contrast: #000000; }
+:root[data-accent="sangre"]  { --acento: #D13449; --acento-contrast: #ffffff; }
+:root[data-accent="tierra"]  { --acento: #4F9462; --acento-contrast: #000000; }
+:root[data-accent="mostaza"] { --acento: #BD8622; --acento-contrast: #000000; }
+
+/* ==========================================================================
+   2. REGLAS BASE Y ALINEACIÓN AXIAL
+   ========================================================================== */
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 html {
     scroll-behavior: smooth;
+    background-color: var(--bg);
 }
 
 body {
-    margin: 0;
-    min-width: 320px;
-    background:
-        linear-gradient(180deg, rgba(67, 116, 90, 0.08), transparent 440px),
-        var(--bg);
+    background: var(--bg);
     color: var(--text);
     font-family: var(--font-main);
-    line-height: 1.5;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 48px; /* Margen de seguridad para no tapar contenido con la barra fija */
 }
 
-body.panel-open {
+/* --- BLOQUEO DE SCROLL NATIVO --- */
+/* 1. Bloqueo del eje vertical */
+body:has(dialog[open]) {
     overflow: hidden;
+}
+
+/* 2. TRUCO DE SIMULACIÓN DE BACKDROP (Para pruebas sin JavaScript)
+   Inyectamos una capa absoluta sobre todo el viewport acoplada al body */
+body:has(dialog[open])::after {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    
+    /* CONTROL DE OPACIDAD ABSOLUTA: 
+       Aumentamos a 0.95 (95% negro) para extinguir casi por completo el contenido trasero */
+    background: rgba(0, 0, 0, 0.699) !important; 
+    
+    /* Difuminado de hardware */
+    backdrop-filter: blur(12px) !important; 
+    -webkit-backdrop-filter: blur(12px);
+    
+    z-index: 99998 !important; /* Se posiciona inmediatamente debajo del dialog (z-index: 100) */
+}
+
+.shell {
+    width: min(960px, calc(100% - 48px));
+    margin: 0 auto;
+}
+
+h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: normal;
+    color: var(--text);
 }
 
 a {
@@ -64,705 +87,736 @@ a {
     text-decoration: none;
 }
 
-button {
-    font: inherit;
-}
-
-.shell {
-    width: min(1180px, calc(100% - 32px));
-    margin: 0 auto;
-}
-
-.utility-bar {
-    border-bottom: 1px solid var(--line);
-    background: var(--ink);
-    color: var(--surface);
-    font-family: var(--font-mono);
-    font-size: 0.76rem;
-}
-
-:root[data-theme="dark"] .utility-bar {
-    color: #10110f;
-}
-
-.utility-layout {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 18px;
-    min-height: 34px;
-}
-
-.utility-items {
-    display: flex;
-    gap: 16px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    white-space: nowrap;
-}
-
-.utility-items::-webkit-scrollbar,
-.main-nav::-webkit-scrollbar,
-.plaza-rail::-webkit-scrollbar,
-.axis-filter::-webkit-scrollbar {
-    display: none;
-}
-
-.utility-item strong {
-    margin-right: 4px;
-}
-
-.utility-item em {
-    color: color-mix(in srgb, currentColor 72%, transparent);
-    font-style: normal;
-    margin-left: 4px;
-}
-
-.utility-updated {
-    color: color-mix(in srgb, currentColor 74%, transparent);
-    white-space: nowrap;
-}
-
+/* ==========================================================================
+   3. CABECERA DEL SITIO (SITE HEADER)
+   ========================================================================== */
 .site-header {
     position: sticky;
     top: 0;
-    z-index: 20;
+    z-index: 100;
+    background: var(--bg);
     border-bottom: 1px solid var(--line);
-    background: color-mix(in srgb, var(--bg) 88%, transparent);
-    backdrop-filter: blur(18px);
 }
 
 .header-layout {
     display: grid;
-    grid-template-columns: minmax(220px, 1fr) auto auto;
+    grid-template-columns: auto 1fr auto;
     align-items: center;
-    gap: 18px;
-    min-height: 74px;
+    gap: 32px;
+    min-height: 64px;
 }
 
 .brand {
-    display: inline-flex;
+    display: flex;
     align-items: center;
     gap: 12px;
-    min-width: 0;
 }
 
-.brand-mark {
-    display: grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    border: 1px solid var(--ink);
-    border-radius: 8px;
-    color: var(--ink);
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 800;
+.brand-mark svg {
+    width: 32px;
+    height: 32px;
+    display: block;
+    stroke: var(--acento);
+    stroke-width: 1.5px;
 }
 
 .brand-copy {
-    display: grid;
-    min-width: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .brand-name {
-    font-size: 1rem;
-    font-weight: 850;
+    font-size: 0.95rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
 }
 
 .brand-tagline {
     color: var(--muted);
-    font-size: 0.78rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    font-size: 0.72rem;
+    font-family: var(--font-mono);
 }
 
 .main-nav {
     display: flex;
-    gap: 6px;
-    overflow-x: auto;
-    scrollbar-width: none;
+    gap: 8px;
+    justify-content: flex-end;
+    padding-right: 16px;
 }
 
-.nav-link,
-.filter-chip {
-    border: 1px solid transparent;
-    border-radius: 999px;
+.nav-link {
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--muted);
-    font-size: 0.86rem;
-    font-weight: 700;
-    padding: 8px 12px;
-    white-space: nowrap;
+    padding: 6px 12px;
+    border-radius: 4px;
+    transition: color 140ms ease;
 }
 
-.nav-link:hover,
-.nav-link:focus-visible,
-.filter-chip:hover,
-.filter-chip:focus-visible {
-    border-color: var(--line);
-    color: var(--text);
-    outline: none;
-}
+.nav-link:hover { color: var(--text); }
+.nav-link.is-active { color: var(--acento); font-weight: 700; }
 
-.nav-link.is-active,
-.filter-chip.is-active {
-    background: var(--ink);
-    color: var(--surface);
-}
+.controls-group { display: flex; align-items: center; }
 
-:root[data-theme="dark"] .nav-link.is-active,
-:root[data-theme="dark"] .filter-chip.is-active {
-    color: #10110f;
-}
-
-.theme-toggle,
-.icon-button {
-    display: grid;
-    place-items: center;
-    width: 42px;
-    height: 42px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--surface);
-    color: var(--text);
-    cursor: pointer;
-}
-
-.theme-toggle:hover,
-.theme-toggle:focus-visible,
-.icon-button:hover,
-.icon-button:focus-visible {
-    border-color: var(--ink);
-    outline: none;
-}
-
-.hero-section,
-.plaza-section,
-.cemetery-section {
+/* ==========================================================================
+   4. HERO PLANO Y CONTROLADO
+   ========================================================================== */
+.hero-section {
     border-bottom: 1px solid var(--line);
+    padding: 48px 0 40px; 
 }
 
 .hero-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 340px;
-    gap: 22px;
-    padding: 26px 0 24px;
-}
-
-.daily-briefing,
-.method-panel,
-.briefing-card,
-.plaza-card,
-.expired-card,
-.about-section {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--surface);
-    box-shadow: 0 18px 44px var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 32px;
 }
 
 .daily-briefing {
-    min-height: 340px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    padding: clamp(24px, 5vw, 48px);
-    background:
-        linear-gradient(135deg, color-mix(in srgb, var(--surface) 92%, transparent), color-mix(in srgb, var(--bg-soft) 92%, transparent)),
-        repeating-linear-gradient(90deg, transparent, transparent 34px, color-mix(in srgb, var(--line) 42%, transparent) 35px);
+    background: transparent !important;
+    padding: 0 !important;
+    min-height: auto !important;
+    border: none !important;
+    max-width: 760px;
 }
 
 .eyebrow {
-    margin: 0;
-    color: var(--clay);
+    color: var(--acento);
     font-family: var(--font-mono);
-    font-size: 0.75rem;
-    font-weight: 800;
-    letter-spacing: 0;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
     text-transform: uppercase;
+    margin-bottom: 12px;
 }
 
 .daily-briefing h1 {
-    max-width: 840px;
-    margin: 12px 0 16px;
-    font-size: clamp(2.1rem, 4.5vw, 4rem);
-    line-height: 1;
-    letter-spacing: 0;
-}
-
-.briefing-dek,
-.section-heading p,
-.method-panel li,
-.reader-dek,
-.reader-block p,
-.reader-block ul,
-.about-section p,
-.cemetery-layout p {
-    color: var(--muted);
+    font-size: 2.4rem;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    letter-spacing: -0.02em;
 }
 
 .briefing-dek {
-    max-width: 720px;
-    margin: 0 0 24px;
-    font-size: 1rem;
-}
-
-.briefing-meta,
-.card-meta,
-.plaza-card-meta,
-.expired-meta {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    color: var(--quiet);
-    font-family: var(--font-mono);
-    font-size: 0.74rem;
-}
-
-.briefing-meta span,
-.plaza-card-meta span,
-.expired-meta span {
-    border: 1px solid var(--line);
-    border-radius: 999px;
-    padding: 4px 8px;
-}
-
-.briefing-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-top: 24px;
-}
-
-.button,
-.source-link,
-.ghost-link {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 42px;
-    border: 1px solid var(--ink);
-    border-radius: 8px;
-    background: var(--ink);
-    color: var(--surface);
-    cursor: pointer;
-    font-family: var(--font-mono);
-    font-size: 0.82rem;
-    font-weight: 800;
-    padding: 10px 15px;
-}
-
-:root[data-theme="dark"] .button,
-:root[data-theme="dark"] .source-link,
-:root[data-theme="dark"] .ghost-link {
-    color: #10110f;
-}
-
-.ghost-link {
-    background: transparent;
-    color: var(--ink);
-}
-
-.button:hover,
-.button:focus-visible,
-.source-link:hover,
-.source-link:focus-visible,
-.ghost-link:hover,
-.ghost-link:focus-visible {
-    transform: translateY(-1px);
-    outline: none;
-}
-
-.method-panel {
-    align-self: stretch;
-    padding: 22px;
-}
-
-.method-panel h2,
-.section-heading h2,
-.cemetery-layout h2,
-.about-section h2 {
-    margin: 8px 0 12px;
-    font-size: clamp(1.55rem, 2.4vw, 2.25rem);
-    line-height: 1.08;
-}
-
-.method-panel ol {
-    display: grid;
-    gap: 10px;
-    margin: 18px 0 0;
-    padding-left: 22px;
-}
-
-.plaza-section,
-.briefings-section,
-.cemetery-section,
-.about-section {
-    padding-top: 34px;
-    padding-bottom: 42px;
-}
-
-.section-heading {
+    color: var(--muted);
+    font-size: 0.98rem;
+    line-height: 1.6;
     margin-bottom: 20px;
 }
 
-.section-heading p {
-    max-width: 740px;
-    margin-top: 8px;
-}
-
-.inline-heading {
-    display: flex;
-    align-items: end;
-    justify-content: space-between;
-    gap: 18px;
-}
-
-.axis-filter {
+.briefing-meta {
     display: flex;
     gap: 8px;
-    max-width: 100%;
-    overflow-x: auto;
-    scrollbar-width: none;
-}
-
-.filter-chip {
-    background: var(--surface);
-    cursor: pointer;
-}
-
-.plaza-rail {
-    display: grid;
-    grid-auto-columns: minmax(270px, 360px);
-    grid-auto-flow: column;
-    gap: 14px;
-    overflow-x: auto;
-    padding-bottom: 6px;
-    scroll-snap-type: x proximity;
-    scrollbar-width: none;
-}
-
-.plaza-card {
-    min-height: 220px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 18px;
-    scroll-snap-align: start;
-}
-
-.plaza-card.is-ghost {
-    border-style: dashed;
-}
-
-.plaza-card.is-identified {
-    border-color: color-mix(in srgb, var(--blue) 54%, var(--line));
-}
-
-.plaza-card.is-question {
-    border-color: color-mix(in srgb, var(--gold) 60%, var(--line));
-}
-
-.plaza-card.is-signal {
-    border-color: color-mix(in srgb, var(--green) 60%, var(--line));
-}
-
-.plaza-card-top {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    color: var(--quiet);
     font-family: var(--font-mono);
-    font-size: 0.76rem;
+    font-size: 0.7rem;
 }
 
-.plaza-card-top strong {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    color: var(--text);
+.briefing-meta span {
+    border: 1px solid var(--line);
+    padding: 2px 8px;
+    border-radius: 3px;
+    color: var(--muted);
 }
 
-.badge-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 999px;
-    background: var(--badge-color);
+.method-panel {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 20px 0 0 0 !important;
+    border-top: 1px dashed var(--line) !important;
+    max-width: 500px;
 }
 
-.plaza-card p {
-    margin: 18px 0;
-    font-size: 1.05rem;
+.method-panel h2 {
+    font-size: 1rem;
+    font-family: var(--font-main);
+    font-weight: 600;
+    color: var(--muted);
+    margin-bottom: 8px;
+}
+
+.method-panel ol {
+    list-style: none;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--quiet);
+    background: transparent !important;
+}
+
+.method-panel ol li {
+    background: transparent !important;
+    margin-bottom: 4px;
+    display: flex;
+    gap: 8px;
+}
+
+.method-panel ol li::before {
+    content: "0" counter(my-counter) ".";
+    counter-increment: my-counter;
+    color: var(--acento);
     font-weight: 700;
 }
+.method-panel ol { counter-reset: my-counter; }
+
+/* ==========================================================================
+   5. ARCHIVO EDITORIAL SIMÉTRICO (CORREGIDO)
+   ========================================================================== */
+.briefings-section {
+    padding: 48px 0;
+    border-bottom: 1px solid var(--line);
+}
+
+.section-heading { margin-bottom: 32px; }
+.section-heading h2 { font-size: 1.5rem; margin-top: 4px; }
 
 .briefing-grid {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
 }
 
 .briefing-card {
-    min-height: 260px;
+    background: transparent !important;
+    border: none !important;
+    border-top: 1px solid var(--line) !important;
+    padding: 20px 12px 12px 12px !important; /* Cojín interno para el resalte */
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    position: relative; /* Anclaje para la expansión del enlace */
+    transition: background-color 180ms ease, border-top-color 180ms ease;
     cursor: pointer;
-    transition: border-color 160ms ease, transform 160ms ease, background 160ms ease;
+    margin: 0 -12px; /* Alineación axial exacta */
 }
 
-.briefing-card:hover,
-.briefing-card:focus-visible {
-    border-color: var(--ink);
-    background: var(--surface-raised);
-    outline: none;
-    transform: translateY(-3px);
+/* ESTADO DE RESALTE: Forzamos la mutación rompiendo la inmutabilidad base */
+.briefing-card:hover {
+    background-color: rgba(255, 255, 255, 0.02) !important;
+    border-top-color: var(--acento) !important;
 }
 
-.card-axis {
-    margin: 0 0 14px;
-    color: var(--clay);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 800;
-    text-transform: uppercase;
+.briefing-card h3 { font-size: 1.25rem; line-height: 1.2; margin: 8px 0; }
+.briefing-card h3 a:hover { color: var(--acento); }
+
+/* Corregimos el contraste del texto para que no sea estático */
+.briefing-card p:not(.card-axis) { 
+    color: var(--muted); 
+    font-size: 0.88rem; 
+    line-height: 1.5; 
+    margin-bottom: 16px; 
+    transition: color 180ms ease;
 }
 
-.briefing-card h3 {
-    margin: 0 0 12px;
-    font-size: 1.35rem;
-    line-height: 1.14;
+.briefing-card:hover p:not(.card-axis) {
+    color: var(--text); /* El texto se ilumina sutilmente al entrar en la tarjeta */
 }
 
-.briefing-card > p:not(.card-axis) {
-    color: var(--muted);
-    margin: 0 0 18px;
+/* EL TRUCO MAESTRO: Expansión absoluta de la superficie interactiva */
+.briefing-card h3 a::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1; /* Cubre el lienzo de la tarjeta por completo */
 }
 
 .card-meta {
     margin-top: auto;
-    border-top: 1px solid var(--line);
-    padding-top: 14px;
-}
-
-.cemetery-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 0.85fr) minmax(320px, 1fr);
-    gap: 26px;
-    align-items: start;
-}
-
-.expired-list {
-    display: grid;
+    display: flex;
     gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--quiet);
+    border: none !important;
+    padding: 0;
 }
 
-.expired-card {
-    padding: 18px;
-    opacity: 0.74;
-}
-
-.expired-card p {
-    margin: 0 0 14px;
-    color: var(--muted);
-}
-
+/* ==========================================================================
+   6. SECCIÓN ACERCA DE / INTERNAS
+   ========================================================================== */
 .about-section {
-    margin-top: 44px;
-    margin-bottom: 52px;
-    padding: 28px;
-    box-shadow: none;
+    padding: 48px 0;
+    border: none !important;
+    max-width: 640px;
 }
+.about-section h2 { font-size: 1.5rem; margin: 6px 0 12px; }
+.about-section p { color: var(--muted); font-size: 0.9rem; }
 
-.empty-state,
-.noscript-warning {
+.empty-state {
     border: 1px solid var(--line);
-    border-radius: 8px;
-    background: var(--surface);
     color: var(--muted);
     padding: 24px;
-}
-
-.panel-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 40;
-    background: rgba(0, 0, 0, 0.56);
-}
-
-.reader-panel {
-    position: fixed;
-    top: 0;
-    right: 0;
-    z-index: 50;
-    width: min(620px, 100%);
-    height: 100dvh;
-    border-left: 1px solid var(--line);
-    background: var(--surface);
-    box-shadow: -24px 0 60px var(--shadow);
-    transform: translateX(100%);
-    transition: transform 220ms ease;
-}
-
-.reader-panel.is-open {
-    transform: translateX(0);
-}
-
-.reader-scroll {
-    height: 100%;
-    overflow-y: auto;
-    padding: 74px clamp(22px, 5vw, 42px) 42px;
-}
-
-.close-panel {
-    position: absolute;
-    top: 18px;
-    right: 18px;
-}
-
-.reader-panel h2 {
-    margin: 12px 0 14px;
-    font-size: clamp(1.9rem, 4vw, 3rem);
-    line-height: 1.02;
-}
-
-.reader-dek {
-    font-size: 1.06rem;
-    margin: 0 0 24px;
-}
-
-.reader-facts {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
-    margin: 0 0 30px;
-}
-
-.reader-facts div {
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 12px;
-}
-
-.reader-facts dt {
-    color: var(--quiet);
     font-family: var(--font-mono);
-    font-size: 0.68rem;
-    margin-bottom: 7px;
-    text-transform: uppercase;
+    font-size: 0.85rem;
 }
 
-.reader-facts dd {
-    margin: 0;
-    font-weight: 800;
+/* ==========================================================================
+   7. RESPONSIVE DESIGN & ANIMACIÓN EN EQUIS (X) MATEMÁTICA
+   ========================================================================== */
+@media (max-width: 920px) {
+    .menu-toggle {
+        display: flex;
+        position: relative;
+        width: 36px;
+        height: 36px;
+        background: transparent;
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        cursor: pointer;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hamburger-line {
+        position: absolute;
+        width: 16px;
+        height: 1px;
+        background-color: var(--text);
+        transition: transform 180ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .hamburger-line:nth-child(1) { transform: translateY(-3px); }
+    .hamburger-line:nth-child(2) { transform: translateY(3px); }
+
+    .menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(1) {
+        transform: translateY(0) rotate(45deg);
+    }
+    .menu-toggle[aria-expanded="true"] .hamburger-line:nth-child(2) {
+        transform: translateY(0) rotate(-45deg);
+    }
+
+    .header-layout { grid-template-columns: 1fr auto; }
+    
+    .main-nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 74px);
+        background: #000000;
+
+        flex-direction: column;
+        flex-direction: column;
+        align-items: flex-end;    /* Cambiado de flex-start a flex-end para empujar los bloques a la derecha */
+        text-align: right;        /* Asegura que el texto interno de los links se justifique a la derecha */
+        
+        padding: 24px;
+        gap: 12px;
+
+        opacity: 0;
+        transform: translateY(-10px);
+        pointer-events: none;
+        transition: opacity 150ms ease, transform 150ms ease;
+        border-bottom: 1px solid var(--line);
+    }
+    
+    .menu-toggle[aria-expanded="true"] ~ .main-nav,
+    .main-nav.is-open {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+    }
+
+    /* Si tus enlaces tienen subtextos o iconos internos, esto asegura que todo el contenedor se estructure simétricamente */
+    .nav-link {
+        text-align: right;
+        width: 100%;
+    }
 }
 
-.reader-block {
-    border-top: 1px solid var(--line);
-    padding-top: 20px;
-    margin-top: 20px;
-}
-
-.reader-block h3 {
-    margin: 0 0 8px;
-    font-size: 1rem;
-}
-
-.reader-block p,
-.reader-block ul {
-    margin: 0;
-}
-
-.reader-block ul {
-    padding-left: 18px;
-}
-
-.reader-block li + li {
-    margin-top: 8px;
-}
-
-.source-link {
-    margin-top: 28px;
-}
-
-.site-footer {
-    border-top: 1px solid var(--line);
-    color: var(--quiet);
-    font-size: 0.88rem;
-    padding: 24px 0;
-}
-
-.footer-layout {
-    display: flex;
-    justify-content: space-between;
-    gap: 18px;
-}
-
-.footer-layout p {
-    margin: 0;
+/* Blindaje absoluto contra filtraciones visuales y elementos vacíos */
+[hidden], .menu-toggle { 
+    display: none !important; 
 }
 
 @media (max-width: 920px) {
-    .header-layout {
-        grid-template-columns: 1fr auto;
-        padding: 12px 0;
-    }
-
-    .main-nav {
-        grid-column: 1 / -1;
-        justify-content: flex-start;
-    }
-
-    .hero-layout,
-    .cemetery-layout {
-        grid-template-columns: 1fr;
-    }
-
-    .inline-heading {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .axis-filter {
-        width: 100%;
+    .menu-toggle { 
+        display: flex !important; 
     }
 }
 
-@media (max-width: 640px) {
-    .shell {
-        width: min(100% - 24px, 1180px);
-    }
+/* ==========================================================================
+   8. SISTEMA DE TELEMETRÍA INFERIOR SOBERANO
+   ========================================================================== */
+.sys-telemetry {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: #000000;
+    border-top: 1px solid var(--line);
+    z-index: 200;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    height: 32px;
+    display: flex;
+    align-items: center;
+}
 
-    .utility-layout {
-        align-items: flex-start;
-        flex-direction: column;
-        gap: 2px;
-        padding: 7px 0;
-    }
+.telemetry-layout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
 
-    .daily-briefing {
-        min-height: 390px;
-    }
+.sys-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+}
 
-    .daily-briefing h1 {
-        font-size: 2rem;
-    }
+.status-indicator {
+    width: 6px;
+    height: 6px;
+    background-color: var(--acento);
+    border-radius: 50%;
+    display: inline-block;
+}
 
-    .briefing-grid,
-    .reader-facts {
-        grid-template-columns: 1fr;
-    }
+.mono-text {
+    letter-spacing: 0.02em;
+}
 
-    .brand-tagline {
-        max-width: 210px;
-    }
+.settings-root {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
 
-    .reader-panel {
-        width: 100%;
-    }
+.settings-menu-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    cursor: pointer;
+    padding: 0 4px;
+    transition: color 140ms ease;
+}
 
-    .footer-layout {
-        flex-direction: column;
-    }
+.settings-menu-btn:hover {
+    color: var(--text);
+}
+
+.settings-submenu {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    right: 0;
+    background: #0a0a0a;
+    border: 1px solid var(--line);
+    padding: 6px 8px;
+    border-radius: 4px;
+    gap: 8px;
+    
+    /* Control de renderizado por estado puro */
+    display: none; 
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.settings-submenu[data-state="open"] {
+    display: flex;
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   INTERRUPTOR DE TELEMETRÍA (CON ICONO VECTORIAL)
+   ========================================================================== */
+.settings-toggle-btn {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+    padding: 6px 8px;
+    transition: color 150ms ease;
+
+    /* COMPOSICIÓN AXIAL: Centrado perfecto del vector y el texto */
+    display: inline-flex;
+    align-items: center;
+    gap: 6px; /* Separación matemática entre el icono y el corchete */
+}
+
+/* Modificador dinámico heredado del ecosistema de la plaza */
+.settings-toggle-btn:hover {
+    color: var(--acento);
+}
+
+/* Restricción dimensional estricta para el SVG */
+.icon-settings {
+    width: 14px;  /* Proporción áurea respecto al tamaño de la fuente mono */
+    height: 14px;
+    transition: transform 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Micro-animación cinética: El engranaje rota levemente al posar el cursor */
+.settings-toggle-btn:hover .icon-settings {
+    transform: rotate(45deg);
+}
+
+.accent-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    padding: 0;
+    transition: transform 100ms ease;
+}
+.accent-dot:hover { border-color: var(--text); transform: scale(1.1); }
+.accent-dot.is-active { border-color: var(--text); transform: scale(1.15); }
+.accent-dot[data-accent="cobre"]   { background: #4FA89B; }
+.accent-dot[data-accent="sangre"]  { background: #D13449; }
+.accent-dot[data-accent="tierra"]  { background: #4F9462; }
+.accent-dot[data-accent="mostaza"] { background: #BD8622; }
+
+/* ==========================================================================
+   9. PORTAL SOBERANO & TELEMETRÍA
+   ========================================================================== */
+
+/* Portal Modal Estricto */
+.portal-gate {
+    background: #050505 !important;
+    color: var(--text);
+    border: 1px solid var(--line);
+    padding: 40px;
+
+    border-radius: 13px;
+
+    width: 90%;
+    max-width: 600px;
+    height: auto;
+    max-height: 85vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 99999;
+}
+
+/* --- DIFUMINADO DEL ENTORNO (BACKDROP) --- */
+.portal-gate::backdrop {
+    background: rgba(0, 0, 0, 0.867) !important; /* Capa oscura traslúcida */
+    backdrop-filter: blur(8px) !important;       /* Difuminado cinético por hardware */
+    transition: backdrop-filter 0.3s ease;
+}
+
+.portal-title {
+    font-size: 1.8rem;
+    font-family: var(--font-serif);
+    margin: 12px 0 24px 0;
+    letter-spacing: -0.5px;
+}
+
+.portal-body p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--muted);
+    margin-bottom: 16px;
+}
+
+.portal-actions {
+    margin-top: 32px;
+    text-align: right;
+}
+
+.portal-btn {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line);
+    padding: 10px 20px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.portal-btn:hover {
+    border-color: var(--acento);
+    background: rgba(255, 255, 255, 0.02);
+}
+
+/* ==========================================================================
+   HERO TELEMETRÍA: CALIBRACIÓN AXIAL DE ALTA PRECISIÓN
+   ========================================================================== */
+
+.telemetry-hero {
+    position: relative; 
+    padding: 24px 0 32px 0; /* Colchón vertical simétrico controlado */
+    border-bottom: 1px solid var(--line);
+    transition: padding 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Estado de Extinción: Forzamos altura cero real para eliminar remanentes */
+.telemetry-hero.is-collapsed {
+    padding: 0 !important;
+    margin: 0 !important;
+    height: 0;
+}
+
+.telemetry-hero.is-collapsed .telemetry-content {
+    display: none !important;
+}
+
+/* --- LENGÜETA CENTRAL ULTRA-SUTIL (REDISEÑADA) --- */
+.telemetry-tab-trigger {
+    position: absolute;
+    top: 100%; 
+    left: 50%;
+    /* MUTACIÓN CRUCIAL: Cambiamos -50% a 0 en el eje Y para que cuelgue limpiamente */
+    transform: translate(-50%, 0); 
+    
+    background: #000000 !important; 
+    border: 1px solid var(--line);
+    /* Removemos el borde superior si queremos que se fusione perfectamente con la línea */
+    border-top: none; 
+    border-radius: 0 0 4px 4px; /* Esquinas redondeadas solo abajo para enfatizar la caída */
+    
+    color: var(--muted);
+    font-family: var(--font-mono);
+    font-size: 0.6rem; 
+    letter-spacing: 1.5px;
+    padding: 5px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+    user-select: none;
+    z-index: 50; 
+    
+    transition: color 150ms ease, border-color 150ms ease, background-color 150ms ease;
+}
+
+/* Interacción táctil/cursor */
+.telemetry-tab-trigger:hover {
+    color: var(--acento);
+    border-color: var(--acento);
+    background: #050505 !important;
+}
+
+/* Rotación del vector indicador */
+.telemetry-tab-trigger .tab-icon {
+    display: inline-block;
+    font-size: 0.5rem;
+    margin-right: 6px;
+    transform: rotate(0deg);
+    transition: transform 200ms ease;
+}
+
+/* Inversión limpia de la flecha al colapsar */
+.telemetry-hero.is-collapsed .telemetry-tab-trigger .tab-icon {
+    transform: rotate(180deg);
+}
+
+.hero-title {
+    font-size: 1.8rem;
+    font-family: var(--font-serif);
+    letter-spacing: -0.5px;
+    margin-top: 4px;
+}
+
+/* Selectores Técnicos Estilo Consola */
+.telemetry-selector {
+    display: flex;
+    gap: 20px;
+    margin: 20px 0; /* Reducido el espaciado vertical interno */
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    flex-wrap: wrap;
+}
+
+.control-label {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    user-select: none;
+}
+
+.control-label input { display: none; } /* Ocultamos el checkbox nativo feo */
+
+/* Indicador binario personalizado estilo terminal */
+.indicator {
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--line);
+    display: inline-block;
+    transition: background 150ms ease;
+}
+
+.control-label input:checked + .indicator {
+    background: var(--acento);
+    border-color: var(--acento);
+    box-shadow: 0 0 8px var(--acento);
+}
+
+.control-label input:checked ~ span {
+    color: var(--text);
+}
+
+/* Grilla Simétrica de Datos */
+.telemetry-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 16px;
+    transition: opacity 200ms ease;
+}
+
+.telemetry-card {
+    border-left: 1px solid var(--line);
+    padding-left: 16px;
+}
+
+/* --- CLASES DE CONTROL DE ESTADO (DOM & STORAGE) --- */
+
+/* Ocultar tarjetas específicas de métricas apagadas */
+.telemetry-card.is-hidden {
+    display: none;
+}
+
+/* Mecanismo de colapso para todo el bloque del Hero */
+.telemetry-body-wrapper.is-collapsed {
+    display: none;
+}
+
+.card-tag {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--muted);
+    letter-spacing: 1px;
+}
+
+.card-value {
+    font-size: 2rem;
+    font-family: var(--font-mono);
+    font-weight: 300;
+    margin: 8px 0;
+    color: var(--text);
+}
+
+.card-value .unit {
+    font-size: 0.8rem;
+    color: var(--muted);
+}
+
+.card-desc {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+/* Adaptación responsiva básica */
+@media (max-width: 768px) {
+    .telemetry-grid { grid-template-columns: 1fr; gap: 32px; }
+    .portal-gate { width: calc(100% - 32px); padding: 24px; }
 }

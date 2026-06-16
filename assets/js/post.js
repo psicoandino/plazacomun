@@ -1,14 +1,13 @@
 const els = {
     html: document.documentElement,
-    themeToggle: document.querySelector("#themeToggle"),
-    themeIcon: document.querySelector("#themeIcon"),
     postArticle: document.querySelector("#postArticle")
 };
 
 boot();
 
 async function boot() {
-    bindTheme();
+    bindAccent(); 
+    bindTelemetry(); // Inicializa el dock inferior en posts
 
     const id = new URLSearchParams(window.location.search).get("id");
     if (!id || !/^\d{4}_\d{2}_\d{2}_[a-z0-9-]+$/.test(id)) {
@@ -22,21 +21,6 @@ async function boot() {
     } catch (error) {
         renderLoadError(error);
     }
-}
-
-function bindTheme() {
-    const savedTheme = localStorage.getItem("plaza-beta-theme");
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    setTheme(savedTheme ?? (prefersDark ? "dark" : "light"));
-    els.themeToggle.addEventListener("click", () => {
-        setTheme(els.html.dataset.theme === "dark" ? "light" : "dark");
-    });
-}
-
-function setTheme(theme) {
-    els.html.dataset.theme = theme;
-    localStorage.setItem("plaza-beta-theme", theme);
-    els.themeIcon.textContent = theme === "dark" ? "☾" : "☼";
 }
 
 async function fetchJson(url) {
@@ -130,4 +114,44 @@ function renderBibliography(post) {
             </ul>
         </section>
     `;
+}
+
+/* --- CONTROL DE ACENTOS CROMÁTICOS --- */
+function setAccent(accent) {
+    document.documentElement.dataset.accent = accent;
+    localStorage.setItem("plaza-acento", accent);
+    document.querySelectorAll(".accent-dot").forEach(btn => {
+        btn.classList.toggle("is-active", btn.dataset.accent === accent);
+    });
+}
+
+function bindAccent() {
+    const saved = localStorage.getItem("plaza-acento") ?? "sangre";
+    setAccent(saved);
+    document.querySelectorAll(".accent-dot").forEach(btn => {
+        btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            setAccent(btn.dataset.accent);
+        });
+    });
+}
+
+/* --- MANEJO DE TELEMETRÍA DEL SISTEMA (DOCK INFERIOR) --- */
+function bindTelemetry() {
+    const toggle = document.getElementById("settingsToggle");
+    const submenu = document.getElementById("colorSubmenu");
+
+    if (toggle && submenu) {
+        toggle.addEventListener("click", e => {
+            e.stopPropagation();
+            const isOpen = submenu.getAttribute("data-state") === "open";
+            submenu.setAttribute("data-state", isOpen ? "closed" : "open");
+        });
+
+        document.addEventListener("click", e => {
+            if (!e.target.closest(".settings-root")) {
+                submenu.setAttribute("data-state", "closed");
+            }
+        });
+    }
 }
