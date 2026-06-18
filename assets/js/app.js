@@ -4,11 +4,17 @@ const els = {
     emptyState: document.querySelector("#emptyState")
 };
 
-boot();
+let cachedPosts = [];
+
+function getTypeColor(type) {
+    return 'var(--acento)';
+}
+
+document.addEventListener('DOMContentLoaded', () => boot());
 
 async function boot() {
     bindAccent(); 
-    bindTelemetry(); // Inicializa el dock inferior de forma nativa
+    bindTelemetry();
 
     try {
         const index = await fetchJson("data/posts-index.json");
@@ -24,20 +30,52 @@ async function fetchJson(url) {
     return response.json();
 }
 
+function renderCardHTML(post, isHero = false) {
+    const typeColor = getTypeColor(post.postType);
+    const textColor = (post.postType === 'columna' || post.postType === 'manifiesto')
+        ? '#000000' : '#ffffff';
+    const titleTag = isHero ? 'h2' : 'h3';
+    const dek = isHero
+        ? `<p class="briefing-dek">${escapeHtml(post.dek)}</p>`
+        : '';
+    return `
+        <span class="type-tag" style="background:${typeColor};color:${textColor}">${escapeHtml(post.postType)}</span>
+        <${titleTag}><a href="${escapeHtml(post.url)}">${escapeHtml(post.title)}</a></${titleTag}>
+        ${dek}
+        <div class="card-meta">
+            <span>${escapeHtml(post.axisLabel)}</span>
+            <span>${escapeHtml(post.territory)}</span>
+        </div>
+    `;
+}
+
 function renderPosts(posts) {
+    cachedPosts = posts;
+    const hero = document.getElementById('homeHero');
+    const row  = document.getElementById('homeRow');
+
     els.emptyState.hidden = posts.length > 0;
-    els.postsGrid.replaceChildren(...posts.map((post) => {
-        const card = document.createElement("article");
-        card.className = "briefing-card";
-        card.innerHTML = `
-            <p class="card-axis">${escapeHtml(post.axisLabel)}</p>
-            <h3><a href="${escapeHtml(post.url)}">${escapeHtml(post.title)}</a></h3>
-            <p>${escapeHtml(post.dek)}</p>
-            <div class="card-meta">
-                <span>${escapeHtml(post.publishedLabel)}</span>
-                <span>${escapeHtml(post.territory)}</span>
-            </div>
-        `;
+
+    if (hero && posts[0]) {
+        const card = document.createElement('article');
+        card.className = 'briefing-card briefing-card--hero';
+        card.innerHTML = renderCardHTML(posts[0], true);
+        hero.replaceChildren(card);
+    }
+
+    if (row) {
+        row.replaceChildren(...posts.slice(1, 3).map(post => {
+            const card = document.createElement('article');
+            card.className = 'briefing-card briefing-card--small';
+            card.innerHTML = renderCardHTML(post, false);
+            return card;
+        }));
+    }
+
+    els.postsGrid.replaceChildren(...posts.map(post => {
+        const card = document.createElement('article');
+        card.className = 'briefing-card';
+        card.innerHTML = renderCardHTML(post, false);
         return card;
     }));
 }
@@ -68,7 +106,7 @@ function setAccent(accent) {
 }
 
 function bindAccent() {
-    const saved = localStorage.getItem("plaza-acento") ?? "sangre";
+    const saved = localStorage.getItem("plaza-acento") ?? "blanco";
     setAccent(saved);
     document.querySelectorAll(".accent-dot").forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -78,32 +116,11 @@ function bindAccent() {
     });
 }
 
-/* --- MANEJO DE TELEMETRÍA DEL SISTEMA (DOCK INFERIOR) --- */
+/* --- MANEJO DE ENTORNO REACCIONARIO MÓVIL --- */
 function bindTelemetry() {
-    const toggle = document.getElementById("settingsToggle");
-    const submenu = document.getElementById("colorSubmenu");
-
-    if (toggle && submenu) {
-        toggle.addEventListener("click", e => {
-            e.stopPropagation();
-            const isOpen = submenu.getAttribute("data-state") === "open";
-            submenu.setAttribute("data-state", isOpen ? "closed" : "open");
-        });
-
-        // Cierre orgánico al hacer clic en el vacío de la interfaz
-        document.addEventListener("click", e => {
-            if (!e.target.closest(".settings-root")) {
-                submenu.setAttribute("data-state", "closed");
-            }
-        });
-    }
-}
-
-/* --- NAVEGACIÓN MÓVIL (MENÚ EN X PERFECCIONADO) --- */
-document.addEventListener('DOMContentLoaded', () => {
     const menuToggle = document.getElementById('menuToggle');
-    const mainNav = document.getElementById('mainNav');
-
+    const mainNav    = document.getElementById('mainNav');
+ 
     if (menuToggle && mainNav) {
         menuToggle.addEventListener('click', () => {
             const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
@@ -111,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mainNav.classList.toggle('is-open');
             document.body.style.overflow = !isExpanded ? 'hidden' : '';
         });
-
+ 
         mainNav.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 menuToggle.setAttribute('aria-expanded', 'false');
@@ -120,74 +137,178 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
-});
+ 
+    document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('is-active'));
+            link.classList.add('is-active');
+        });
+    });
+}
 
 /* ==========================================================================
    SISTEMA DE PERSISTENCIA Y SOBERANÍA DE DATOS (PLAZA COMÚN)
    ========================================================================== */
-
 document.addEventListener('DOMContentLoaded', () => {
     initPortalGate();
-    initTelemetryControl();
 });
 
-// 1. GESTIÓN DEL MODAL DE BIENVENIDA (UNA SOLA VEZ)
 function initPortalGate() {
     const portal = document.getElementById('portalGate');
     const acceptBtn = document.getElementById('acceptManifesto');
-    if (!portal) return;
+    if (!portal || !acceptBtn) return;
 
-    // Verificar si ya existe el bit de confirmación en el almacenamiento local
     const manifestoLeido = localStorage.getItem('plaza-manifesto-leido') === 'true';
 
     if (!manifestoLeido) {
-        // Ejecución en modo modal estricto por hardware
         portal.showModal();
     }
 
-    // Al hacer clic en el botón de salida/aceptar
+    portal.addEventListener('cancel', (e) => {
+        e.preventDefault();
+    });
+
     acceptBtn.addEventListener('click', () => {
         localStorage.setItem('plaza-manifesto-leido', 'true');
         portal.close();
     });
 }
 
-// 2. GESTIÓN DEL PANEL DE TELEMETRÍA (CONFIGURACIÓN GUARDADA)
-function initTelemetryControl() {
-    const telemetrySection = document.getElementById('telemetrySection');
-    const toggleBtn = document.getElementById('toggleTelemetryBtn');
-    const checkboxes = document.querySelectorAll('.telemetry-selector input[type="checkbox"]');
+/* ==========================================================================
+   CONTROLADOR DE ESTADOS DEL PORTAL SECUENCIAL (ONBOARDING SLIDER)
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    const portal = document.getElementById('portalGate');
+    const prevBtn = document.getElementById('prevStep');
+    const nextBtn = document.getElementById('nextStep');
+    const executeBtn = document.getElementById('acceptManifesto');
+    const progressIndicator = document.querySelector('.progress-indicator');
 
-    if (!telemetrySection || !toggleBtn) return;
+    if (!portal || !nextBtn || !prevBtn || !executeBtn) return;
 
-    // A. RESTAURAR ESTADO DE LA SECCIÓN MONOLÍTICA
-    const isCollapsed = localStorage.getItem('plaza-telemetria-colapsada') === 'true';
-    if (isCollapsed) {
-        telemetrySection.classList.add('is-collapsed');
-        toggleBtn.querySelector('.tab-text').textContent = 'MOSTRAR TELEMETRÍA';
+    let currentStep = 1;
+    const totalSteps = 3;
+
+    function updatePortalState() {
+        portal.setAttribute('data-current-step', currentStep);
+
+        if (progressIndicator) {
+            const progressPercentage = (currentStep / totalSteps) * 100;
+            progressIndicator.style.width = `${progressPercentage}%`;
+        }
+
+        if (currentStep === 1) {
+            prevBtn.style.visibility = 'hidden';
+            nextBtn.style.display = 'block';
+            executeBtn.style.display = 'none';
+        } else if (currentStep === 2) {
+            prevBtn.style.visibility = 'visible';
+            nextBtn.style.display = 'block';
+            executeBtn.style.display = 'none';
+        } else if (currentStep === 3) {
+            prevBtn.style.visibility = 'visible';
+            nextBtn.style.display = 'none';
+            executeBtn.style.display = 'block';
+        }
     }
 
-    // Escuchador del click en la lengüeta axial
-    toggleBtn.addEventListener('click', () => {
-        const currentlyCollapsed = telemetrySection.classList.toggle('is-collapsed');
-        localStorage.setItem('plaza-telemetria-colapsada', currentlyCollapsed);
-        
-        // Mutación sutil de la etiqueta de texto
-        toggleBtn.querySelector('.tab-text').textContent = currentlyCollapsed ? 'MOSTRAR TELEMETRÍA' : 'TELEMETRÍA';
+    nextBtn.addEventListener('click', () => {
+        if (currentStep < totalSteps) {
+            currentStep++;
+            updatePortalState();
+        }
     });
 
-    // B. RESTAURAR PREFERENCIAS DE TARJETAS INDIVIDUALES
-    checkboxes.forEach(chk => {
-        const metricId = chk.dataset.metric;
-        const card = document.getElementById(`card-${metricId}`);
-        const isVisible = localStorage.getItem(`metric-${metricId}`) !== 'false';
-        
-        chk.checked = isVisible;
-        if (!isVisible && card) card.style.display = 'none';
+    prevBtn.addEventListener('click', () => {
+        if (currentStep > 1) {
+            currentStep--;
+            updatePortalState();
+        }
+    });
 
-        chk.addEventListener('change', () => {
-            localStorage.setItem(`metric-${metricId}`, chk.checked);
-            if (card) card.style.display = chk.checked ? '' : 'none';
-        });
+    updatePortalState();
+});
+
+/* ==========================================================================
+   SISTEMA DE CONTROL DE APERTURA Y CIERRE DE CONFIGURACIÓN (UNIFICADO)
+   ========================================================================== */
+const navConfig = document.getElementById('navConfig');
+const closeConfigBtn = document.getElementById('closeConfigBtn');
+const desktopConfigBtn = document.getElementById('desktopConfigBtn');
+
+function openConfigPanel() {
+    if (!navConfig) return;
+
+    if (window.innerWidth > 920 && desktopConfigBtn) {
+        const buttonRect = desktopConfigBtn.getBoundingClientRect();
+        
+        const buttonCenterX = buttonRect.left + (buttonRect.width / 2);
+        const buttonCenterY = buttonRect.top + (buttonRect.height / 2);
+
+        const xOffsetFromRight = 36; 
+        const targetLeft = buttonCenterX - (420 - xOffsetFromRight);
+        
+        const xOffsetFromTop = 36;
+        const targetTop = buttonCenterY - xOffsetFromTop;
+
+        navConfig.style.left = `${targetLeft}px`;
+        navConfig.style.top = `${targetTop}px`;
+    } else {
+        navConfig.style.left = '';
+        navConfig.style.top = '';
+    }
+
+    navConfig.classList.add('is-open');
+    if (desktopConfigBtn) {
+        desktopConfigBtn.setAttribute('aria-expanded', 'true');
+    }
+}
+
+function closeConfigPanel() {
+    if (!navConfig) return;
+    navConfig.classList.remove('is-open');
+    if (desktopConfigBtn) {
+        desktopConfigBtn.setAttribute('aria-expanded', 'false');
+    }
+}
+
+// Interceptación de evento sobre la tuerca editorial
+if (desktopConfigBtn) {
+    desktopConfigBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); 
+        if (navConfig && navConfig.classList.contains('is-open')) {
+            closeConfigPanel();
+        } else {
+            openConfigPanel();
+        }
     });
 }
+
+// Cierre explícito mediante botón de aspa ("X")
+if (closeConfigBtn) {
+    closeConfigBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        closeConfigPanel();
+    });
+}
+
+// Cierre universal mediante secuencia física (Escape)
+window.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navConfig && navConfig.classList.contains('is-open')) {
+        closeConfigPanel();
+    }
+});
+
+// Cierre analizado geométricamente por click reactivo fuera de la interfaz activa
+document.addEventListener('click', (e) => {
+    if (!navConfig || window.innerWidth <= 920) return;
+    
+    if (navConfig.classList.contains('is-open')) {
+        const isClickOnButton = desktopConfigBtn && desktopConfigBtn.contains(e.target);
+        const isClickInsidePanel = navConfig.contains(e.target);
+        
+        if (!isClickOnButton && !isClickInsidePanel) {
+            closeConfigPanel();
+        }
+    }
+});

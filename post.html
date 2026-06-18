@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!-- Cambiar esto en index.html y post.html -->
-<html lang="es" data-theme="dark">
+<html lang="es" data-accent="blanco">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="assets/css/styles.css">
     <script src="assets/js/post.js" defer></script>
 </head>
+
 <body>
     <header class="site-header">
         <div class="shell header-layout">
@@ -36,11 +37,9 @@
             <!-- 1. Modificación de Hrefs: Se antepone 'index.html' para resolver la navegación desde el post -->
             <!-- 2. Estado Óptico: Se remueve 'is-active' de ambos enlaces ya que estás en la vista de lectura -->
             <nav class="main-nav" id="mainNav" aria-label="Secciones">
-                <a href="index.html#posts" class="nav-link">Posts</a>
-                <a href="index.html#estructura" class="nav-link">Estructura</a>
+                <a href="index.html#archivo" class="nav-link">Posts</a>
             </nav>
-    
-                
+
                 <!-- El mismo dispositivo tecnológico para la mutación responsive en dispositivos móviles -->
                 <button class="menu-toggle" id="menuToggle" type="button" aria-expanded="false" aria-controls="mainNav" aria-label="Abrir menú de navegación">
                     <span class="hamburger-line" aria-hidden="true"></span>
@@ -85,9 +84,10 @@
                     </button>
                     <div class="settings-submenu" id="colorSubmenu" data-state="closed">
                         <button class="accent-dot" data-accent="sangre" aria-label="Acento Sangre"></button>
-                        <button class="accent-dot" data-accent="cobre" aria-label="Acento Cobre"></button>
-                        <button class="accent-dot" data-accent="tierra" aria-label="Acento Tierra"></button>
                         <button class="accent-dot" data-accent="mostaza" aria-label="Acento Mostaza"></button>
+                        <button class="accent-dot" data-accent="tierra" aria-label="Acento Tierra"></button>
+                        <button class="accent-dot" data-accent="cobre" aria-label="Acento Cobre"></button>
+                        <button class="accent-dot" data-accent="amatista" aria-label="Acento Amatista"></button>
                     </div>
                 </div>
             </div>

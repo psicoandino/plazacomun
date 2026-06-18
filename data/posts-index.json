@@ -10,7 +10,9 @@
       "axisLabel": "Servicios publicos y acceso",
       "territory": "Chile (con foco en regiones del Biobio, Valparaiso y Metropolitana)",
       "publishedLabel": "2026-06-15",
-      "url": "post.html?id=2026_06_15_desempleo-chile-emergencia-informalidad"
+      "url": "post.html?id=2026_06_15_desempleo-chile-emergencia-informalidad",
+      
+      "postType": "analisis"
     }
   ]
 }

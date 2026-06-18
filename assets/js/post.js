@@ -3,6 +3,19 @@ const els = {
     postArticle: document.querySelector("#postArticle")
 };
 
+function getTypeColor(type) {
+    const colors = {
+        manifiesto:    '#000000',
+        investigacion: '#C73A4A',
+        analisis:      '#B78627',
+        cronica:       '#6D7C50',
+        reflexion:     '#248692',
+        memoria:       '#7D5AA1',
+        columna:       '#FFFFFF'
+    };
+    return colors[type] ?? '#ffffff';
+}
+
 boot();
 
 async function boot() {
@@ -33,6 +46,7 @@ function renderPost(post) {
     document.title = `${post.title} | Plaza Comun beta 001`;
     els.postArticle.innerHTML = `
         <p class="eyebrow">${escapeHtml(post.axisLabel)} // ${escapeHtml(post.publishedLabel)}</p>
+        <span class="type-tag" style="background:${getTypeColor(post.postType)}; color:${post.postType === 'columna' || post.postType === 'manifiesto' ? '#000000' : '#ffffff'}">${escapeHtml(post.postType)}</span>
         <h1>${escapeHtml(post.title)}</h1>
         <p class="briefing-dek">${escapeHtml(post.dek)}</p>
         <div class="briefing-meta">
@@ -42,7 +56,6 @@ function renderPost(post) {
         </div>
         ${post.sections.map(renderSection).join("")}
         ${renderBibliography(post)}
-        ${renderFutureSlots(post)}
     `;
 }
 
@@ -51,15 +64,6 @@ function renderSection(section) {
         <section class="reader-block">
             <h3>${escapeHtml(section.heading)}</h3>
             <p>${escapeHtml(section.body)}</p>
-        </section>
-    `;
-}
-
-function renderFutureSlots(post) {
-    return `
-        <section class="reader-block">
-            <h3>Espacio futuro</h3>
-            <p>Este post ya tiene identificador estable: ${escapeHtml(post.id)}. Mas adelante puede conectar comentarios, reacciones, fuentes o actualizaciones sin cambiar su URL compartible.</p>
         </section>
     `;
 }
@@ -126,7 +130,8 @@ function setAccent(accent) {
 }
 
 function bindAccent() {
-    const saved = localStorage.getItem("plaza-acento") ?? "sangre";
+    // CAMBIO: Inicialización por defecto mutada de "sangre" a "blanco"
+    const saved = localStorage.getItem("plaza-acento") ?? "blanco";
     setAccent(saved);
     document.querySelectorAll(".accent-dot").forEach(btn => {
         btn.addEventListener("click", (e) => {
@@ -155,3 +160,33 @@ function bindTelemetry() {
         });
     }
 }
+
+/* ==========================================================================
+   CONTROL DE NAVEGACIÓN RESPONSIVE MÓVIL (SINCRO POST)
+   ========================================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const mainNav = document.getElementById('mainNav');
+
+    if (menuToggle && mainNav) {
+        menuToggle.addEventListener('click', () => {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', !isExpanded);
+            mainNav.classList.toggle('is-open');
+            
+            if (!isExpanded) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
+        });
+
+        mainNav.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                menuToggle.setAttribute('aria-expanded', 'false');
+                mainNav.classList.remove('is-open');
+                document.body.style.overflow = '';
+            });
+        });
+    }
+});
