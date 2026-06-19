@@ -46,7 +46,7 @@ function renderPost(post) {
     document.title = `${post.title} | Plaza Comun beta 001`;
     els.postArticle.innerHTML = `
         <p class="eyebrow">${escapeHtml(post.axisLabel)} // ${escapeHtml(post.publishedLabel)}</p>
-        <span class="type-tag" style="background:${getTypeColor(post.postType)}; color:${post.postType === 'columna' || post.postType === 'manifiesto' ? '#000000' : '#ffffff'}">${escapeHtml(post.postType)}</span>
+        <span class="type-tag" style="background:${getTypeColor(post.postType)}; color:${post.postType === 'columna' || post.postType === 'analisis' ? '#000000' : '#ffffff'}">${escapeHtml(post.postType)}</span>
         <h1>${escapeHtml(post.title)}</h1>
         <p class="briefing-dek">${escapeHtml(post.dek)}</p>
         <div class="briefing-meta">

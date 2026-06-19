@@ -13,13 +13,63 @@
         <div class="shell header-layout">
             <a href="index.html" class="brand" aria-label="Plaza Común">
                 <span class="brand-mark" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="3" y="3" width="18" height="18" rx="3"/>
-                        <path d="M7 9H17"/>
-                        <path d="M7 12H17"/>
-                        <path d="M8 12V16"/>
-                        <path d="M16 12V16"/>
-                    </svg>
+                <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+
+                    <!-- Poste -->
+                    <path
+                        d="M6 4.5V19"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    />
+
+                    <!-- Luminaria -->
+                    <rect
+                        x="4"
+                        y="2"
+                        width="4"
+                        height="2"
+                        rx="1"
+                        fill="var(--acento)"
+                    />
+
+                    <!-- Respaldo banca -->
+                    <path
+                        d="M10.3 13.8H20.3"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.2"
+                        stroke-linecap="round"
+                    />
+
+                    <!-- Asiento banca -->
+                    <path
+                        d="M10.5 16H20"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.2"
+                        stroke-linecap="round"
+                    />
+
+                    <!-- Patas -->
+                    <path
+                        d="M12 16V19"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.2"
+                        stroke-linecap="round"
+                    />
+
+                    <path
+                        d="M18.5 16V19"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.2"
+                        stroke-linecap="round"
+                    />
+
+                </svg>
                 </span>
                 <span class="brand-copy">
                     <span class="brand-name">Plaza Común</span>
@@ -74,18 +124,18 @@
             </div>
             <div class="portal-content-wrapper">
                 <div class="portal-slide" data-slide="1">
-                    <p class="eyebrow">[ PASO 01 : PRINCIPIOS ]</p>
-                    <h2 class="portal-title">Soberanía Cognitiva</h2>
-                    <p class="portal-text">Este espacio opera bajo principios de autonomía. No registra tu identidad ni transfiere métricas a nodos centralizados.</p>
+                    <p class="eyebrow">[ 01 ]</p>
+                    <h2 class="portal-title">Llegaste sin manual.</h2>
+                    <p class="portal-text">El Estado opera igual si lo entiendes o no. Plaza Común existe para cambiar eso.</p>
                 </div>
                 <div class="portal-slide" data-slide="2">
-                    <p class="eyebrow">[ PASO 02 : SISTEMA ]</p>
-                    <h2 class="portal-title">Persistencia Local</h2>
-                    <p class="portal-text">Tus configuraciones se procesan exclusivamente en tu dispositivo. Eres dueño absoluto del estado de tu interfaz.</p>
+                    <p class="eyebrow">[ 02 ]</p>
+                    <h2 class="portal-title">Una luz pequeña.</h2>
+                    <p class="portal-text">No prometemos revelaciones. Solo claridad suficiente para moverse con menos ansiedad y más libertad.</p>
                 </div>
                 <div class="portal-slide" data-slide="3">
-                    <p class="eyebrow">[ PASO 03 : ENTORNO ]</p>
-                    <h2 class="portal-title">Tu espacio</h2>
+                    <p class="eyebrow">[ 03 ]</p>
+                    <h2 class="portal-title">Tu espacio.</h2>
                     <p class="portal-text">Define el color con que leerás la Plaza.</p>
                     <div class="portal-config-block">
                         <p class="config-label">Color de acento</p>
@@ -100,10 +150,13 @@
                     </div>
                 </div>
             </div>
+            <p class="portal-version">beta_001 — psicoandino</p>
             <div class="portal-navigation">
                 <button type="button" class="portal-nav-btn" id="prevStep" style="visibility:hidden;">← VOLVER</button>
-                <button type="button" class="portal-nav-btn" id="nextStep">CONTINUAR ➔</button>
-                <button type="button" class="portal-btn-execute" id="acceptManifesto" style="display:none;">ENTRAR A LA PLAZA ➔</button>
+                <div class="portal-action-stack">
+                    <button type="button" class="portal-nav-btn" id="nextStep">CONTINUAR ➔</button>
+                    <button type="button" class="portal-btn-execute" id="acceptManifesto">ENTRAR ➔</button>
+                </div>
             </div>
         </dialog>
 

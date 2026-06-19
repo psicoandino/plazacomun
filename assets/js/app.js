@@ -32,7 +32,7 @@ async function fetchJson(url) {
 
 function renderCardHTML(post, isHero = false) {
     const typeColor = getTypeColor(post.postType);
-    const textColor = (post.postType === 'columna' || post.postType === 'manifiesto')
+    const textColor = (post.postType === 'columna' || post.postType === 'analisis')
         ? '#000000' : '#ffffff';
     const titleTag = isHero ? 'h2' : 'h3';
     const dek = isHero
@@ -175,7 +175,7 @@ function initPortalGate() {
 }
 
 /* ==========================================================================
-   CONTROLADOR DE ESTADOS DEL PORTAL SECUENCIAL (ONBOARDING SLIDER)
+   CONTROLADOR DE ESTADOS DEL PORTAL SECUENCIAL (REFACTORIZADO)
    ========================================================================== */
 document.addEventListener('DOMContentLoaded', () => {
     const portal = document.getElementById('portalGate');
@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalSteps = 3;
 
     function updatePortalState() {
+        // Asignamos el paso actual como estado en el DOM
         portal.setAttribute('data-current-step', currentStep);
 
         if (progressIndicator) {
@@ -197,23 +198,19 @@ document.addEventListener('DOMContentLoaded', () => {
             progressIndicator.style.width = `${progressPercentage}%`;
         }
 
+        // Control estricto de visibilidad del botón VOLVER (Bajo impacto estructural)
         if (currentStep === 1) {
             prevBtn.style.visibility = 'hidden';
-            nextBtn.style.display = 'block';
-            executeBtn.style.display = 'none';
-        } else if (currentStep === 2) {
+        } else {
             prevBtn.style.visibility = 'visible';
-            nextBtn.style.display = 'block';
-            executeBtn.style.display = 'none';
-        } else if (currentStep === 3) {
-            prevBtn.style.visibility = 'visible';
-            nextBtn.style.display = 'none';
-            executeBtn.style.display = 'block';
         }
+
+        // --- SOLUCIÓN: Eliminamos las líneas que forzaban .style.display en nextBtn y executeBtn ---
     }
 
     nextBtn.addEventListener('click', () => {
         if (currentStep < totalSteps) {
+            portal.setAttribute('data-direction', 'forward'); // Marcamos avance cine
             currentStep++;
             updatePortalState();
         }
@@ -221,6 +218,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     prevBtn.addEventListener('click', () => {
         if (currentStep > 1) {
+            portal.setAttribute('data-direction', 'backward'); // Marcamos retroceso analógico
             currentStep--;
             updatePortalState();
         }

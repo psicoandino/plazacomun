@@ -95,12 +95,9 @@ body:has(dialog[open])::after {
     
     /* CONTROL DE OPACIDAD ABSOLUTA: 
        Aumentamos a 0.95 (95% negro) para extinguir casi por completo el contenido trasero */
-    background: rgba(0, 0, 0, 0.100) !important; 
+    background: rgba(0, 0, 0, 0.950) !important; 
     
-    /* Difuminado de hardware */
-    backdrop-filter: blur(12px) !important; 
-    -webkit-backdrop-filter: blur(12px);
-    
+    /* Blur removido: la capa ya es opaca, el blur duplicado generaba una costura de renderizado GPU en el borde redondeado */
     z-index: 99998 !important; /* Se posiciona inmediatamente debajo del dialog (z-index: 100) */
 }
 
@@ -146,8 +143,8 @@ a {
 }
 
 .brand-mark svg {
-    width: 32px;
-    height: 32px;
+    width: 48px;
+    height: 48px;
     display: block;
     stroke: var(--acento);
     stroke-width: 1.5px;
@@ -220,7 +217,7 @@ a {
     font-weight: 700;
     letter-spacing: 0.05em;
     text-transform: uppercase;
-    margin-bottom: 12px;
+    margin-bottom: 6px;
 }
 
 .daily-briefing h1 {
@@ -633,7 +630,8 @@ a {
 
     width: 90%;
     max-width: 580px;
-    height: 580px;
+    min-height: 420px;
+    height: auto;
     max-height: 90vh;
     
     overflow: hidden !important; /* SOLUClÓN: Capa de contención absoluta contra scrollbars */
@@ -647,6 +645,11 @@ a {
 }
 
 /* Clausura del anillo de enfoque nativo del navegador (Focus Reset) */
+#portalGate:focus,
+#portalGate:focus-visible {
+    outline: none !important;
+}
+
 .portal-gate button:focus {
     outline: none !important;
     box-shadow: none !important;
@@ -677,7 +680,12 @@ a {
     border: 2px solid transparent;
     cursor: pointer;
     padding: 0;
-    transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+/* El cambio a 'activo' es instantáneo: evita un frame residual visible al cambiar de slide a medio camino de una transición de escala */
+.portal-accent-group .accent-dot.is-active {
+    transition: border-color 150ms ease, box-shadow 150ms ease;
 }
 
 /* Feedback visual instantáneo cuando una opción es la activa en el sistema */
@@ -695,11 +703,21 @@ a {
 }
 
 .portal-title {
-    font-size: 1.8rem;
+    font-size: clamp(2.2rem, 5vw, 3rem);
     font-family: var(--font-serif);
-    margin: 12px 0 12px 0;
+    margin: 12px 0 10px 0;
     letter-spacing: -0.5px;
+    line-height: 1.1;
 }
+
+.portal-text {
+    font-size: 1rem;
+    color: var(--muted);
+    line-height: 1.65;
+    max-width: 420px;
+}
+
+
 
 .portal-body p {
     font-size: 0.9rem;
@@ -734,8 +752,8 @@ a {
 .portal-btn-execute {
     background: var(--acento) !important;
     color: var(--acento-contrast) !important;
-    border: 1px solid var(--acento) !important;
-    padding: 10px 24px;
+    border: 12px solid var(--acento) !important;
+    padding: 40px 24px;
     font-family: var(--font-mono);
     font-size: 0.72rem;
     font-weight: 700;
@@ -744,18 +762,71 @@ a {
     border-radius: 4px;
     
     /* Animación de feedback cinético al posar el cursor */
-    transition: transform 150ms ease, box-shadow 150ms ease;
+    transition: opacity 250ms ease, transform 150ms ease, box-shadow 150ms ease;
+
+    padding-bottom: 0;
+    padding-top: 0;
+    height: auto;
+    line-height: 1.5;
+
+    vertical-align: baseline;
+}
+
+/* ==========================================================================
+   SISTEMA DE BARRIDO CINEMÁTICO DIRECCIONAL BIFÁSICO
+   ========================================================================== */
+
+/* --- AVANCE (Paso 2 → Paso 3) --- */
+/* 1. CONTINUAR se borra hacia la derecha disolviéndose en el eje axial */
+dialog[data-current-step="3"][data-direction="forward"] #nextStep {
+    animation: barrerSalidaHaciaDerecha 220ms cubic-bezier(0.4, 0, 1, 1) forwards;
+}
+/* 2. ENTRAR emerge de derecha a izquierda tras una ventana de 120ms de vacío */
+dialog[data-current-step="3"][data-direction="forward"] #acceptManifesto {
+    animation: barrerEntradaDesdeDerecha 340ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+}
+
+/* --- RETROCESO ANALÓGICO (Paso 3 → Paso 2) --- */
+/* 1. ENTRAR se contrae y repliega hacia el extremo derecho */
+dialog[data-current-step="2"][data-direction="backward"] #acceptManifesto {
+    animation: barrerSalidaHaciaDerecha 220ms cubic-bezier(0.4, 0, 1, 1) forwards;
+    opacity: 1; /* Forzado de render dinámico durante la salida */
+}
+/* 2. CONTINUAR vuelve a florecer desde el eje axial hacia la izquierda */
+dialog[data-current-step="2"][data-direction="backward"] #nextStep {
+    animation: barrerEntradaDesdeDerecha 340ms cubic-bezier(0.16, 1, 0.3, 1) 120ms both;
+}
+
+/* --- MATRICES DE TRANSFORMACIÓN GEOMÉTRICA DE CLIP-PATH --- */
+@keyframes barrerSalidaHaciaDerecha {
+    0% {
+        clip-path: inset(0 0 0 0);
+        opacity: 1;
+    }
+    100% {
+        clip-path: inset(0 0 0 100%); /* Desplazamiento del umbral izquierdo al límite derecho */
+        opacity: 0;
+    }
+}
+
+@keyframes barrerEntradaDesdeDerecha {
+    0% {
+        clip-path: inset(0 0 0 100%);
+        opacity: 0;
+    }
+    100% {
+        clip-path: inset(0 0 0 0); /* Apertura absoluta del lienzo */
+        opacity: 1;
+    }
 }
 
 .portal-btn-execute:hover {
-    transform: translateY(-1px);
     box-shadow: 0 0 16px var(--acento); /* Brillo cuántico del color seleccionado */
 }
 
 .portal-btn-execute:active {
-    transform: translateY(1px);
+    box-shadow: 0 0 10px var(--acento);
 }
-
 
 /* Adaptación responsiva básica */
 @media (max-width: 768px) {
@@ -783,6 +854,10 @@ a {
 }
 
 /* TRATAMIENTO DE SLIDES */
+.portal-content-wrapper {
+    padding-bottom: 96px; /* Reserva espacio para nav absoluta ahora que el alto es fluido */
+}
+
 .portal-slide {
     display: none; /* Por defecto ocultos */
     animation: fadeIn 250ms ease forwards;
@@ -801,13 +876,53 @@ dialog[data-current-step="3"] [data-slide="3"] { display: block; }
 /* CONTENEDOR DE BOTONES INFERIORES */
 .portal-navigation {
     position: absolute;
-    bottom: 32px;
+    bottom: 55px;
     left: 40px;
     right: 40px;
+    height: 32px;
+
+    /* Nueva arquitectura de alineación */
     display: flex;
+    align-items: center; /* Centrado vertical */
     justify-content: space-between;
-    align-items: center;
+
 }
+
+/* Pila Grid: ambos botones de avance comparten una sola celda */
+.portal-action-stack {
+    display: grid;
+    grid-template-areas: "stack";
+    align-items: center;
+    justify-items: end;
+    min-width: 140px; /* Ancho del botón sólido más grande, evita resize del clip-path */
+}
+
+#nextStep, #acceptManifesto {
+    grid-area: stack;
+    margin: 0 !important;
+    transition: transform 150ms ease, box-shadow 150ms ease;
+}
+
+/* Modificadores adaptativos para preservar tu feedback activo en el botón sólido */
+#acceptManifesto:hover {
+    box-shadow: 0 0 18px var(--acento) !important;
+}
+#acceptManifesto:active {
+    box-shadow: 0 0 10px var(--acento) !important;
+}
+
+/* --- ESTADOS NEUTROS BASE (Evitan filtraciones visuales previas) --- */
+dialog[data-current-step="1"] #acceptManifesto,
+dialog[data-current-step="2"] #acceptManifesto {
+    opacity: 0;
+    pointer-events: none;
+}
+
+dialog[data-current-step="3"] #nextStep {
+    opacity: 0;
+    pointer-events: none;
+}
+
 .portal-nav-btn {
     background: none;
     border: none;
@@ -818,6 +933,29 @@ dialog[data-current-step="3"] [data-slide="3"] { display: block; }
     letter-spacing: 1px;
 }
 .portal-nav-btn:hover { color: var(--text); }
+#prevStep  { left: 0; line-height: 1}
+/* REMOCIÓN DE DIRECCIONAMIENTO INERTE (Flexbox ya maneja el empuje a la derecha) */
+#acceptManifesto {
+    right: 0; 
+}
+
+#nextStep {
+    padding-right: 36px; /* 24px padding + 12px border de #acceptManifesto: ancla la flecha a la misma coordenada */
+}
+
+.portal-version {
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--muted);
+    opacity: 0.35;
+    letter-spacing: 0.08em;
+    pointer-events: none;
+}
 
 /* ==========================================================================
    INTERVENCIÓN DE DISEÑO: ARQUITECTURA GEOMÉTRICA DE LA SLIDE 3
@@ -1281,3 +1419,11 @@ dialog[data-current-step="3"] [data-slide="3"] { display: block; }
  
 :root[data-theme="light"] .nav-config { background: #E8E3DA; }
 :root[data-theme="light"] .sys-telemetry { background: #E8E3DA; }
+
+#nextStep, #acceptManifesto { 
+    line-height: 1;
+}
+
+.portal-gate .portal-accent-group .accent-dot.is-active {
+    box-shadow: none;
+}
